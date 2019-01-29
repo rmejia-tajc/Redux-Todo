@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { addNewTodo } from '../actions';
+import { addNewTodo, toggleCompleted } from '../actions';
 
 
 class TodoList extends React.Component {
@@ -19,6 +19,11 @@ class TodoList extends React.Component {
         this.setState({ newTodo: ''});
     }
 
+    toggleTaskCompleted = (event, index) => {
+        event.preventDefault();
+        this.props.toggleCompleted(index);
+    }
+
 
     render() {
         return (
@@ -27,7 +32,10 @@ class TodoList extends React.Component {
 
                 <div>
                     {this.props.todos.map((todo, index) => (
-                        <h4 key={index}>
+                        <h4
+                            key={index}
+                            onClick={event => this.toggleTaskCompleted(event, index)}
+                        >
                             {todo.task}
                         </h4>
                     ))}
@@ -51,4 +59,4 @@ const mapStateToProps = state => ({
     todos: state.todos
 });
 
-export default connect(mapStateToProps, { addNewTodo })(TodoList);
+export default connect(mapStateToProps, { addNewTodo, toggleCompleted })(TodoList);
